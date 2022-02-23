@@ -166,14 +166,10 @@ Optionally adds an ELLIPSIS at the end."
       (setq ch-out (concat ch-out ch-seq)))
     (when ch-out (substring ch-out 0 n))))
 
-(defun quick-peek--env-separator ()
-  "Return environment separator."
-  (propertize
-   (if (display-graphic-p) "\f"
-     (quick-peek--fill-n-char-seq "─" (- (window-total-width) 2)))
-   'face font-lock-comment-face))
+(defvar quick-peek--spacer-header nil "Header string for `quick-peek'")
+(defvar quick-peek--spacer-footer nil "Footer string for `quick-peek'.")
 
-(defun quick-peek-set-spacers (buf ln)
+(defun quick-peek-set-spacers (buf)
   "Prepare quick peek header and footer."
   (let ((default-face (quick-peek--form-face "white")))
     (setq quick-peek--spacer-header
@@ -185,8 +181,9 @@ Optionally adds an ELLIPSIS at the end."
            (propertize (buffer-file-name buf) 'face (quick-peek--form-face "#222"))
            (propertize "\n" 'face default-face))
           quick-peek--spacer-footer
-          (propertize (concat (quick-peek--env-separator)
-                              (if (eq quick-peek-position 'below) "" "\n"))
+          (propertize (concat
+                       "\n"
+                       (if (eq quick-peek-position 'below) "" "\n"))
                       'face default-face))))
 
 (defun quick-peek--scroll-to-see ()
@@ -198,10 +195,7 @@ Optionally adds an ELLIPSIS at the end."
       (when (< ln-diff default-max-h)
         (scroll-up-line (- default-max-h ln-diff))))))
 
-(defvar quick-peek--spacer-header nil "Header string for `quick-peek'")
-(defvar quick-peek--spacer-footer nil "Footer string for `quick-peek'.")
-
-(defun quick-peek--insert-spacer (pos str-before str-after)
+(defun quick-peek--insert-spacer (pos _str-before _str-after)
   "Insert a thin horizontal line at POS.
 Line is surrounded by STR-BEFORE and STR-AFTER."
   (let ((str (if (= pos (point-min)) quick-peek--spacer-header
