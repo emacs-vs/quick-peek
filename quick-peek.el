@@ -193,7 +193,7 @@ Optionally adds an ELLIPSIS at the end."
       (setq lvl (quick-peek--last-visible-line-in-window)
             ln-diff (- lvl ln-current))
       (when (< ln-diff default-max-h)
-        (scroll-up-line (- default-max-h ln-diff))))))
+        (ignore-errors (scroll-up-line (- default-max-h ln-diff)))))))
 
 (defun quick-peek--insert-spacer (pos _str-before _str-after)
   "Insert a thin horizontal line at POS.
