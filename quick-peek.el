@@ -39,6 +39,7 @@
 ;;; Code:
 
 (require 'cl-lib)
+(require 'subr-x)
 
 (defgroup quick-peek nil
   "Customization group for the `quick-peek' package."
@@ -138,15 +139,74 @@ Optionally adds an ELLIPSIS at the end."
       (insert prefix)
       (forward-line 1))))
 
+(defun quick-peek--last-visible-pos-in-window ()
+  "Last point in current visible window."
+  (save-excursion
+    (ignore-errors (move-to-window-line -1))
+    (line-beginning-position)))
+
+(defun quick-peek--last-line-in-buffer-p ()
+  "Is current line the last line in buffer."
+  (= (line-number-at-pos (point) t) (line-number-at-pos (point-max) t)))
+
+(defun quick-peek--last-visible-line-in-window ()
+  "Last line number in current visible window."
+  (line-number-at-pos (quick-peek--last-visible-pos-in-window) t))
+
+(defun quick-peek--form-face (fg &optional weight)
+  "Form `quick-peek' face with FG."
+  (let ((weight (or weight 'normal))
+        (color (or (face-attribute 'highlight :background) "black")))
+    `(:background ,color :foreground ,fg :inherit quick-peek-border-face :weight ,weight)))
+
+(defun quick-peek--fill-n-char-seq (ch-seq n)
+  "Fill CH-SEQ with N length."
+  (when-let ((ch-out ch-seq) (n (or n 1)))
+    (while (< (length ch-out) n)
+      (setq ch-out (concat ch-out ch-seq)))
+    (when ch-out (substring ch-out 0 n))))
+
+(defun quick-peek--env-separator ()
+  "Return environment separator."
+  (propertize
+   (if (display-graphic-p) "\f"
+     (quick-peek--fill-n-char-seq "─" (- (window-total-width) 2)))
+   'face font-lock-comment-face))
+
+(defun quick-peek-set-spacers (buf ln)
+  "Prepare quick peek header and footer."
+  (let ((default-face (quick-peek--form-face "white")))
+    (setq quick-peek--spacer-header
+          (concat
+           (if (quick-peek--last-line-in-buffer-p) "\n" "")
+           (propertize " " 'face default-face)
+           (propertize (buffer-name buf) 'face (quick-peek--form-face "black" 'bold))
+           (propertize " " 'face default-face)
+           (propertize (buffer-file-name buf) 'face (quick-peek--form-face "#222"))
+           (propertize "\n" 'face default-face))
+          quick-peek--spacer-footer
+          (propertize (concat (quick-peek--env-separator)
+                              (if (eq quick-peek-position 'below) "" "\n"))
+                      'face default-face))))
+
+(defun quick-peek--scroll-to-see ()
+  "Scroll buffer in order to see the full `quick-peek' content."
+  (let ((default-max-h 16) (ln-current (line-number-at-pos)) lvl ln-diff)
+    (when (eq quick-peek-position 'below)
+      (setq lvl (quick-peek--last-visible-line-in-window)
+            ln-diff (- lvl ln-current))
+      (when (< ln-diff default-max-h)
+        (scroll-up-line (- default-max-h ln-diff))))))
+
+(defvar quick-peek--spacer-header nil "Header string for `quick-peek'")
+(defvar quick-peek--spacer-footer nil "Footer string for `quick-peek'.")
+
 (defun quick-peek--insert-spacer (pos str-before str-after)
   "Insert a thin horizontal line at POS.
 Line is surrounded by STR-BEFORE and STR-AFTER."
-  (save-excursion
-    (goto-char pos)
-    (insert (propertize str-before 'face 'quick-peek-padding-face))
-    (let* ((color (or (face-attribute 'highlight :background) "black")))
-      (insert (propertize "\n" 'face `(:background ,color :inherit quick-peek-border-face))))
-    (insert (propertize str-after 'face 'quick-peek-padding-face))))
+  (let ((str (if (= pos (point-min)) quick-peek--spacer-header
+               quick-peek--spacer-footer)))
+    (save-excursion (goto-char pos) (insert str))))
 
 ;;; Core
 
