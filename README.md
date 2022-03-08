@@ -2,7 +2,9 @@
 
 # quick-peek
 
-![CI](etc/screencast.gif)
+[![CI](https://github.com/emacs-vs/quick-peek/actions/workflows/test.yml/badge.svg)](https://github.com/emacs-vs/quick-peek/actions/workflows/test.yml)
+
+![](etc/screencast.gif)
 
 An inline pop-up library for Emacs Lisp.
 
@@ -19,4 +21,4 @@ See docstrings of `quick-peek-background-face`, `quick-peek-border-face`, and
 
 ## Changes
 
-![CI](etc/vs.png)
+![](etc/vs.png)
