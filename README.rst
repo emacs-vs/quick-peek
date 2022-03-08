@@ -4,8 +4,6 @@
 
 .. image:: etc/screencast.gif
 
-.. image:: etc/vs.png
-
 An inline pop-up library for Emacs Lisp.
 
 API
@@ -20,3 +18,8 @@ Customization
 
 See docstrings of ``quick-peek-background-face``, ``quick-peek-border-face``, and
 ``quick-peek-padding-face``.
+
+Changes
+=============
+
+.. image:: etc/vs.png
