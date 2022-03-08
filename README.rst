@@ -4,6 +4,8 @@
 
 .. image:: etc/screencast.gif
 
+.. image:: etc/vs.png
+
 An inline pop-up library for Emacs Lisp.
 
 API
