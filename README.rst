@@ -2,7 +2,7 @@
  Quick-peek
 ============
 
-.. image:: screencast.gif
+.. image:: etc/screencast.gif
 
 An inline pop-up library for Emacs Lisp.
 
