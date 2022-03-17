@@ -1,4 +1,4 @@
-# ignore these directories.
+# ignore these directories
 /.git
 /recipes
 
@@ -6,5 +6,7 @@
 .cask/
 dist/
 
-# ignore generated files.
+# ignore generated files
 *.elc
+
+/.eask
