@@ -2,11 +2,13 @@
 /.git
 /recipes
 
-# cask packages
-.cask/
-dist/
-
 # ignore generated files
 *.elc
 
-/.eask
+# eask packages
+.eask/
+dist/
+
+# packaging
+*-autoloads.el
+*-pkg.el
