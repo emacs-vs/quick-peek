@@ -1,6 +1,7 @@
 (package "quick-peek"
          "1.0"
          "Inline quick-peek windows")
+
 (package-file "quick-peek.el")
 
 (source "melpa")
