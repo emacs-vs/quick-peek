@@ -1,4 +1,4 @@
-[![JCS-ELPA](https://raw.githubusercontent.com/jcs-emacs/jcs-elpa/master/badges/v/quick-peek.svg)](https://jcs-emacs.github.io/jcs-elpa/#/quick-peek)
+[![JCS-ELPA](https://raw.githubusercontent.com/jcs-emacs/badges/master/elpa/v/quick-peek.svg)](https://jcs-emacs.github.io/jcs-elpa/#/quick-peek)
 
 # quick-peek
 
