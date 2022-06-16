@@ -2,6 +2,9 @@
          "1.0"
          "Inline quick-peek windows")
 
+(website-url "https://github.com/emacs-vs/quick-peek")
+(keywords "tools" "help" "doc" "convenience")
+
 (package-file "quick-peek.el")
 
 (source "melpa")
