@@ -1,3 +1,5 @@
+;; -*- mode: eask; lexical-binding: t -*-
+
 (package "quick-peek"
          "1.0"
          "Inline quick-peek windows")
